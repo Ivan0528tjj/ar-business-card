@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>谭俊佳 - 保存联系人</title>
+  <style>
+    :root {
+      --paper: #f7f9f4;
+      --ink: #141817;
+      --muted: #59605b;
+      --jade: #127a5b;
+      --line: #d8dfd7;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Hiragino Sans GB", "PingFang SC", sans-serif;
+      padding: 22px;
+    }
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 28px 22px 34px;
+      border: 2px solid var(--ink);
+      background: rgba(255,255,255,.58);
+    }
+    .eyebrow {
+      color: var(--jade);
+      font-size: 15px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: 54px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    .companies {
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+    .actions {
+      display: grid;
+      gap: 12px;
+      margin: 24px 0 28px;
+    }
+    a.button {
+      display: block;
+      text-decoration: none;
+      text-align: center;
+      color: #fff;
+      background: var(--jade);
+      padding: 16px 18px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    a.secondary {
+      color: var(--ink);
+      background: #e8eee7;
+    }
+    a.ar {
+      background: var(--ink);
+    }
+    .rows {
+      display: grid;
+      gap: 13px;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .row span {
+      color: var(--jade);
+      font-weight: 700;
+    }
+    .row strong {
+      font-weight: 500;
+      overflow-wrap: anywhere;
+    }
+    .hint {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">Ivan</div>
+    <h1>谭俊佳</h1>
+    <div class="companies">
+      <div>广东省鼎汇项目管理咨询有限公司</div>
+      <div>深圳鼎汇网络信息有限公司</div>
+    </div>
+    <div class="actions">
+      <a class="button ar" href="ar.html">打开 AR 名片动画</a>
+      <a class="button" href="contact.vcf">打开联系人保存界面</a>
+      <a class="button secondary" href="tel:13692233879">拨打电话 13692233879</a>
+    </div>
+    <section class="rows">
+      <div class="row"><span>手机</span><strong>13692233879</strong></div><div class="row"><span>邮箱</span><strong>ivan.tan0528@gmail.com</strong></div><div class="row"><span>公司</span><strong>广东省鼎汇项目管理咨询有限公司</strong></div><div class="row"><span>公司</span><strong>深圳鼎汇网络信息有限公司</strong></div><div class="row"><span>陆丰地址</span><strong>陆丰市东海街道龙光村广东省鼎汇项目管理咨询有限公司</strong></div><div class="row"><span>深圳地址</span><strong>深圳市南山区粤海街道海珠社区滨海大道3165号五矿金融大厦1103</strong></div>
+    </section>
+    <p class="hint">说明：普通微信网页不能直接写入手机通讯录。点击上方按钮会打开 vCard 联系人卡片；如果微信显示为文件，请点右上角选择“在浏览器打开”，再添加到通讯录。真正的微信内一键保存需要做微信小程序。</p>
+  </main>
+</body>
+</html>

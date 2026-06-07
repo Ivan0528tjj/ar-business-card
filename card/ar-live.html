@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>谭俊佳 - AR 名片</title>
+  <style>
+    :root {
+      --ink: #101312;
+      --paper: #f7f8f4;
+      --jade: #127a5b;
+      --gold: #c9ad6a;
+      --mist: rgba(255,255,255,.88);
+      --line: rgba(255,255,255,.2);
+    }
+    * { box-sizing: border-box; }
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: #151817;
+      color: var(--paper);
+      font-family: "Hiragino Sans GB", "PingFang SC", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body.camera-mode {
+      height: 100%;
+      overflow: hidden;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .hud {
+      position: fixed;
+      z-index: 30;
+      left: max(14px, env(safe-area-inset-left));
+      right: max(14px, env(safe-area-inset-right));
+      top: max(12px, env(safe-area-inset-top));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .status {
+      min-width: 0;
+      padding: 10px 13px;
+      border: 1px solid rgba(255,255,255,.17);
+      background: rgba(16,19,18,.76);
+      box-shadow: 0 18px 40px rgba(0,0,0,.28);
+      backdrop-filter: blur(16px);
+    }
+    .status strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+    .status span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255,255,255,.68);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .hud-actions {
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+    .control {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 88px;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      color: #fff;
+      background: rgba(16,19,18,.78);
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 16px 34px rgba(0,0,0,.24);
+      backdrop-filter: blur(16px);
+    }
+    .control.primary {
+      border-color: rgba(18,122,91,.5);
+      background: rgba(18,122,91,.9);
+    }
+    .scene-preview {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 68px 16px 24px;
+      overflow: hidden;
+      background:
+        linear-gradient(112deg, rgba(255,255,255,.08), rgba(255,255,255,0) 28%),
+        repeating-linear-gradient(26deg, rgba(255,255,255,.045) 0 2px, transparent 2px 82px),
+        linear-gradient(22deg, #3f3328 0%, #6a5440 28%, #44362c 56%, #79644c 100%);
+    }
+    .stage {
+      position: relative;
+      width: min(1180px, 100%);
+      aspect-ratio: 16 / 8.75;
+      min-height: 520px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.22);
+      background:
+        radial-gradient(circle at 28% 22%, rgba(255,255,255,.16), transparent 20%),
+        linear-gradient(18deg, rgba(255,255,255,.06), rgba(0,0,0,.14));
+      box-shadow: 0 34px 90px rgba(0,0,0,.38);
+    }
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(101deg, transparent 0 118px, rgba(255,255,255,.07) 119px 121px, transparent 122px 240px),
+        radial-gradient(circle at 18% 72%, rgba(0,0,0,.22), transparent 22%);
+      opacity: .75;
+    }
+    .visual {
+      position: absolute;
+      display: block;
+      filter: drop-shadow(0 22px 34px rgba(0,0,0,.34));
+      opacity: 0;
+      transform-origin: center;
+      animation-fill-mode: both;
+      z-index: 2;
+    }
+    .visual img {
+      width: 100%;
+      display: block;
+    }
+    .held-card {
+      left: 6.2%;
+      top: 12%;
+      width: 22%;
+      opacity: 1;
+      transform: rotate(2.5deg);
+      animation: card-in 760ms cubic-bezier(.16,1,.3,1) both;
+    }
+    .gallery {
+      left: 6.8%;
+      top: 39%;
+      width: 24%;
+      animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
+    }
+    .identity {
+      left: 29%;
+      top: 15%;
+      width: 34%;
+      animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
+    }
+    .web-panel {
+      right: 3.2%;
+      top: 12%;
+      width: 43%;
+      transform-origin: left center;
+      animation: web-in 760ms 760ms cubic-bezier(.16,1,.3,1) both;
+    }
+    .pill {
+      left: 36%;
+      width: 21%;
+      animation: pop-center 540ms cubic-bezier(.2,1.12,.3,1) both;
+    }
+    .pill.website {
+      top: 39%;
+      animation-delay: 930ms;
+    }
+    .pill.contact {
+      top: 52%;
+      animation-delay: 1050ms;
+    }
+    .icon-link {
+      position: absolute;
+      width: 7.1%;
+      aspect-ratio: 1;
+      z-index: 5;
+      opacity: 0;
+      transform-origin: center;
+      filter: drop-shadow(0 16px 24px rgba(0,0,0,.34));
+      animation: icon-in 460ms cubic-bezier(.2,1.18,.3,1) both;
+    }
+    .icon-link img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .icon-call { left: 12%; top: 75%; animation-delay: 1160ms; }
+    .icon-mail { left: 22.5%; top: 75%; animation-delay: 1240ms; }
+    .icon-map { left: 33%; top: 75%; animation-delay: 1320ms; }
+    .icon-save { left: 43.5%; top: 75%; animation-delay: 1400ms; }
+    .quick-strip {
+      position: absolute;
+      left: 11%;
+      top: 69.5%;
+      width: 39%;
+      min-height: 76px;
+      z-index: 1;
+      border: 1px solid rgba(255,255,255,.72);
+      background: rgba(7,8,8,.76);
+      box-shadow: 0 18px 40px rgba(0,0,0,.24);
+      opacity: 0;
+      animation: strip-in 520ms 1090ms cubic-bezier(.2,1.08,.3,1) both;
+    }
+    .quick-strip strong {
+      position: absolute;
+      left: 124px;
+      top: 17px;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+    .quick-strip span {
+      position: absolute;
+      left: 124px;
+      top: 46px;
+      color: rgba(255,255,255,.78);
+      font-size: 15px;
+    }
+    .quick-strip::before,
+    .quick-strip::after {
+      content: "";
+      position: absolute;
+      top: 22px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .quick-strip::before { left: 22px; }
+    .quick-strip::after { left: 60px; background: var(--ink); }
+    .hint {
+      position: absolute;
+      right: 20px;
+      bottom: 16px;
+      z-index: 4;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      letter-spacing: 0;
+    }
+    #ar-mount,
+    #ar-mount a-scene {
+      width: 100vw;
+      height: 100vh;
+    }
+    #ar-mount {
+      display: none;
+    }
+    body.camera-mode .scene-preview {
+      display: none;
+    }
+    body.camera-mode #ar-mount {
+      display: block;
+    }
+    body.target-found .status {
+      border-color: rgba(18,122,91,.7);
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translate3d(-24px, -12px, 0) rotate(-4deg) scale(.92); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) rotate(2.5deg) scale(1); }
+    }
+    @keyframes pop-left {
+      from { opacity: 0; transform: translate3d(-26px, 18px, 0) scale(.74); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes pop-center {
+      from { opacity: 0; transform: translate3d(0, 18px, 0) scale(.72); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes web-in {
+      from { opacity: 0; transform: translate3d(70px, 8px, 0) rotateY(-16deg) scale(.78); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) rotateY(-6deg) scale(1); }
+    }
+    @keyframes icon-in {
+      from { opacity: 0; transform: translate3d(0, 38px, 0) scale(.48); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes strip-in {
+      from { opacity: 0; transform: translate3d(0, 24px, 0) scale(.88); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @media (max-width: 780px) {
+      .hud {
+        align-items: flex-start;
+      }
+      .hud-actions {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .control {
+        min-width: 72px;
+        min-height: 38px;
+        padding: 0 10px;
+      }
+      .scene-preview {
+        padding: 64px 0 0;
+        place-items: start center;
+      }
+      .stage {
+        width: 100vw;
+        min-height: calc(100svh - 64px);
+        aspect-ratio: auto;
+        border-left: 0;
+        border-right: 0;
+      }
+      .held-card {
+        left: 5%;
+        top: 10%;
+        width: 39%;
+      }
+      .gallery {
+        left: 5%;
+        top: 31%;
+        width: 45%;
+      }
+      .identity {
+        left: 38%;
+        top: 9%;
+        width: 58%;
+      }
+      .pill {
+        left: 47%;
+        width: 47%;
+      }
+      .pill.website { top: 38%; }
+      .pill.contact { top: 48%; }
+      .web-panel {
+        left: 9%;
+        right: auto;
+        top: 56%;
+        width: 86%;
+      }
+      .quick-strip {
+        display: none;
+      }
+      .icon-link {
+        width: 17%;
+        top: 87%;
+      }
+      .icon-call { left: 10%; }
+      .icon-mail { left: 31%; }
+      .icon-map { left: 52%; }
+      .icon-save { left: 73%; }
+      .hint {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <div class="status" id="tracking-status">
+      <strong>AR 名片预览</strong>
+      <span>电话 / 邮件 / 地址 / 保存</span>
+    </div>
+    <div class="hud-actions">
+      <button class="control primary" id="start-camera" type="button">启动识别</button>
+      <a class="control" href="wechat.html">名片页</a>
+    </div>
+  </div>
+
+  <main class="scene-preview" id="scene-preview" aria-label="AR 名片布局预览">
+    <section class="stage">
+      <img class="visual held-card" src="tan-junjia-ar-back.png" alt="名片背面">
+      <img class="visual gallery" src="ar-assets/gallery-panel.png" alt="项目卡片预览">
+      <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
+      <a class="visual pill website" href="wechat.html"><img src="ar-assets/button-website.png" alt="打开名片页"></a>
+      <a class="visual pill contact" href="contact.vcf"><img src="ar-assets/button-contact.png" alt="保存联系人"></a>
+      <img class="visual web-panel" src="ar-assets/web-panel.png" alt="资料页面板">
+      <div class="quick-strip"><strong>广东鼎汇 AR 名片</strong><span>电话 / 邮件 / 地址 / 保存联系人</span></div>
+      <a class="icon-link icon-call" href="tel:13692233879"><img src="ar-assets/icon-call.png" alt="拨打电话"></a>
+      <a class="icon-link icon-mail" href="mailto:ivan.tan0528@gmail.com"><img src="ar-assets/icon-mail.png" alt="发送邮件"></a>
+      <a class="icon-link icon-map" href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8"><img src="ar-assets/icon-map.png" alt="打开地址"></a>
+      <a class="icon-link icon-save" href="contact.vcf"><img src="ar-assets/icon-save.png" alt="保存联系人"></a>
+      <div class="hint">card.ivannas.vip / AR BUSINESS CARD</div>
+    </section>
+  </main>
+
+  <div id="ar-mount"></div>
+  <template id="ar-template">
+    <a-scene
+      id="ar-scene"
+      mindar-image="imageTargetSrc: targets/dinghui-card-back.mind; filterMinCF: 0.04; filterBeta: 8; warmupTolerance: 3; missTolerance: 8;"
+      color-space="sRGB"
+      renderer="colorManagement: true; physicallyCorrectLights: false; alpha: true;"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false">
+      <a-assets timeout="30000">
+        <img id="identityFloat" src="ar-assets/identity-float.png">
+        <img id="galleryPanel" src="ar-assets/gallery-panel.png">
+        <img id="webPanel" src="ar-assets/web-panel.png">
+        <img id="buttonWebsite" src="ar-assets/button-website.png">
+        <img id="buttonContact" src="ar-assets/button-contact.png">
+        <img id="iconCall" src="ar-assets/icon-call.png">
+        <img id="iconMail" src="ar-assets/icon-mail.png">
+        <img id="iconMap" src="ar-assets/icon-map.png">
+        <img id="iconSave" src="ar-assets/icon-save.png">
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-camera>
+
+      <a-entity id="card-target" mindar-image-target="targetIndex: 0">
+        <a-entity id="ar-root" visible="false">
+          <a-entity data-pop position="-0.22 -0.53 0.13" rotation="-8 0 0" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 560; delay: 160; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
+            <a-plane width="0.58" height="0.328" material="src: #galleryPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+
+          <a-entity data-pop position="0.53 0.17 0.16" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 620; delay: 260; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 160; easing: easeInQuad">
+            <a-plane width="0.68" height="0.272" material="src: #identityFloat; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+
+          <a-entity data-pop position="0.58 -0.16 0.14" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 430; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
+            <a-plane class="clickable" data-href="wechat.html" width="0.38" height="0.092" material="src: #buttonWebsite; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+
+          <a-entity data-pop position="0.58 -0.31 0.14" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 540; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
+            <a-plane class="clickable" data-href="contact.vcf" width="0.38" height="0.092" material="src: #buttonContact; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+
+          <a-entity data-pop position="1.28 0.0 0.12" rotation="0 -8 0" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 680; delay: 620; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 170; easing: easeInQuad">
+            <a-plane width="0.9" height="0.622" material="src: #webPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+
+          <a-entity data-pop position="-0.36 -0.86 0.18" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 720; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
+            <a-plane class="clickable" data-href="tel:13692233879" width="0.12" height="0.12" material="src: #iconCall; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+          <a-entity data-pop position="-0.12 -0.86 0.18" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 800; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
+            <a-plane class="clickable" data-href="mailto:ivan.tan0528@gmail.com" width="0.12" height="0.12" material="src: #iconMail; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+          <a-entity data-pop position="0.12 -0.86 0.18" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 880; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
+            <a-plane class="clickable" data-href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" width="0.12" height="0.12" material="src: #iconMap; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+          <a-entity data-pop position="0.36 -0.86 0.18" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 960; easing: easeOutBack"
+            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
+            <a-plane class="clickable" data-href="contact.vcf" width="0.12" height="0.12" material="src: #iconSave; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+    </a-scene>
+  </template>
+
+  <script>
+    const statusBox = document.getElementById("tracking-status");
+    const startButton = document.getElementById("start-camera");
+    let started = false;
+
+    function setStatus(title, message, found) {
+      document.body.classList.toggle("target-found", Boolean(found));
+      statusBox.innerHTML = `<strong>${title}</strong><span>${message}</span>`;
+    }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error("Failed to load " + src));
+        document.head.appendChild(script);
+      });
+    }
+
+    async function startAR() {
+      if (started) return;
+      started = true;
+      startButton.textContent = "加载中";
+      setStatus("正在启动识别", "请允许浏览器使用相机", false);
+
+      if (!navigator.mediaDevices && location.protocol === "http:") {
+        started = false;
+        startButton.textContent = "启动识别";
+        setStatus("当前先显示预览", "这个 HTTP 浏览器可能限制相机权限", false);
+        return;
+      }
+
+      try {
+        await loadScript("vendor/aframe.min.js");
+        await loadScript("vendor/mindar-image-aframe.prod.js");
+
+        document.getElementById("ar-mount").appendChild(document.getElementById("ar-template").content.cloneNode(true));
+        document.body.classList.add("camera-mode");
+
+        const target = document.getElementById("card-target");
+        const root = document.getElementById("ar-root");
+        const pops = Array.from(document.querySelectorAll("[data-pop]"));
+
+        function showPopups() {
+          root.setAttribute("visible", true);
+          requestAnimationFrame(() => pops.forEach((el) => el.emit("arshow")));
+          setStatus("已识别名片", "可以点击电话、邮件、地址或保存按钮", true);
+        }
+
+        function hidePopups() {
+          pops.forEach((el) => el.emit("arhide"));
+          setTimeout(() => root.setAttribute("visible", false), 220);
+          setStatus("对准名片背面", "识别后会自动弹出联系方式", false);
+        }
+
+        target.addEventListener("targetFound", showPopups);
+        target.addEventListener("targetLost", hidePopups);
+
+        document.querySelectorAll("[data-href]").forEach((el) => {
+          el.addEventListener("click", () => {
+            const href = el.getAttribute("data-href");
+            if (href) window.location.href = href;
+          });
+        });
+
+        startButton.textContent = "预览";
+        startButton.onclick = () => window.location.href = "ar.html";
+        setStatus("对准名片背面", "识别后会自动弹出联系方式", false);
+      } catch (error) {
+        console.error(error);
+        started = false;
+        startButton.textContent = "启动识别";
+        document.body.classList.remove("camera-mode");
+        setStatus("当前先显示预览", "相机识别未启动，按钮仍可点击", false);
+      }
+    }
+
+    startButton.addEventListener("click", startAR);
+    if (new URLSearchParams(location.search).get("camera") === "1") startAR();
+  </script>
+</body>
+</html>

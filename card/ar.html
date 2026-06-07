@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>谭俊佳 - AR 名片</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: #3f3328;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+    }
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 12px 14px;
+      background: #101312;
+      border-bottom: 1px solid rgba(255,255,255,.18);
+    }
+    .title {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+    .sub {
+      margin-top: 4px;
+      color: rgba(255,255,255,.72);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .actions {
+      display: table;
+      width: 100%;
+      margin-top: 10px;
+      border-spacing: 8px 0;
+      table-layout: fixed;
+    }
+    .actions a {
+      display: table-cell;
+      height: 42px;
+      text-align: center;
+      vertical-align: middle;
+      background: #127a5b;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .actions a.dark {
+      background: #222725;
+    }
+    .preview {
+      padding: 14px 0 22px;
+    }
+    .preview img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 0;
+    }
+    .desktop {
+      display: none;
+    }
+    .buttons {
+      padding: 0 14px 26px;
+    }
+    .button {
+      display: block;
+      margin: 10px 0;
+      padding: 15px 16px;
+      background: #f7f8f4;
+      color: #101312;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .button.primary {
+      background: #127a5b;
+      color: #fff;
+    }
+    .note {
+      padding: 0 18px 28px;
+      color: rgba(255,255,255,.72);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    @media (min-width: 760px) {
+      .mobile { display: none; }
+      .desktop { display: block; }
+      .page {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      .preview {
+        padding: 18px;
+      }
+      .preview img {
+        border: 1px solid rgba(255,255,255,.18);
+      }
+      .buttons {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top">
+      <h1 class="title">谭俊佳 AR 名片</h1>
+      <div class="sub">这个是轻量入口页，先保证手机能打开；下方按钮可直接使用。</div>
+      <div class="actions">
+        <a href="ar-live.html">启动识别</a>
+        <a class="dark" href="wechat.html">名片页</a>
+      </div>
+    </div>
+
+    <div class="preview">
+      <img class="mobile" src="ar-assets/layout-mobile-preview.png" alt="AR 名片布局预览">
+      <img class="desktop" src="ar-assets/layout-desktop-preview.png" alt="AR 名片布局预览">
+    </div>
+
+    <div class="buttons">
+      <a class="button primary" href="tel:13692233879">拨打电话 13692233879</a>
+      <a class="button" href="contact.vcf">保存联系人</a>
+      <a class="button" href="mailto:ivan.tan0528@gmail.com">发送邮件</a>
+      <a class="button" href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8">打开地址</a>
+    </div>
+
+    <div class="note">
+      如果点“启动识别”后相机打不开，是 iPhone 对 HTTP 网页相机权限的限制。这个入口页本身不依赖 HTTPS，手机应能直接显示。
+    </div>
+  </div>
+</body>
+</html>

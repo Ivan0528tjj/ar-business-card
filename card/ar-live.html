@@ -333,6 +333,39 @@
     .tap-flash.show {
       animation: tap-pulse 420ms cubic-bezier(.16,1,.3,1);
     }
+    .social-toast {
+      position: fixed;
+      z-index: 38;
+      left: 50%;
+      bottom: max(26px, calc(env(safe-area-inset-bottom) + 20px));
+      width: min(340px, calc(100vw - 32px));
+      padding: 14px 16px;
+      color: #fff;
+      background: rgba(16,19,18,.9);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 22px 48px rgba(0,0,0,.34);
+      backdrop-filter: blur(18px);
+      transform: translate3d(-50%, 18px, 0);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+    .social-toast.show {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+    }
+    .social-toast strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+    .social-toast span {
+      display: block;
+      margin-top: 5px;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      line-height: 1.45;
+    }
     @keyframes card-in {
       from { opacity: 0; transform: translate3d(-24px, -12px, 0) rotate(-4deg) scale(.92); }
       to { opacity: 1; transform: translate3d(0, 0, 0) rotate(2.5deg) scale(1); }
@@ -447,8 +480,8 @@
       <img class="visual held-card" src="tan-junjia-front-print-ready.png" alt="名片正面">
       <img class="visual gallery" src="ar-assets/gallery-panel.png" alt="项目卡片预览">
       <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
-      <a class="visual pill website" href="wechat.html"><img src="ar-assets/button-website.png" alt="打开名片页"></a>
-      <a class="visual pill contact" href="contact.vcf"><img src="ar-assets/button-contact.png" alt="保存联系人"></a>
+      <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png" alt="保存微信 cyclone_2006"></a>
+      <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png" alt="保存 QQ 304514421"></a>
       <img class="visual web-panel" src="ar-assets/web-panel.png" alt="资料页面板">
       <div class="quick-strip"><strong>广东鼎汇 AR 名片</strong><span>电话 / 邮件 / 地址 / 保存联系人</span></div>
       <a class="icon-link icon-call" href="tel:13692233879"><img src="ar-assets/icon-call.png" alt="拨打电话"></a>
@@ -466,6 +499,7 @@
     <a href="contact.vcf"><img src="ar-assets/icon-save.png" alt="">保存</a>
   </nav>
   <div class="tap-flash" id="tap-flash"></div>
+  <div class="social-toast" id="social-toast" aria-live="polite"></div>
 
   <div id="ar-mount"></div>
   <template id="ar-template">
@@ -512,16 +546,16 @@
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 390; easing: easeOutBack"
             animation__rise="property: position; startEvents: arshow; from: 0.75 0.04 0.06; to: 0.75 0.08 0.2; dur: 430; delay: 390; easing: easeOutCubic"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
-            <a-plane class="clickable" data-href="wechat.html" width="0.54" height="0.131" material="src: #buttonWebsite; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="wechat.html" width="0.66" height="0.22" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="weixin://contacts/profile/cyclone_2006" width="0.54" height="0.131" material="src: #buttonWebsite; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="weixin://contacts/profile/cyclone_2006" width="0.66" height="0.22" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
 
           <a-entity data-pop position="0.75 -0.12 0.2" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 500; easing: easeOutBack"
             animation__rise="property: position; startEvents: arshow; from: 0.75 -0.16 0.06; to: 0.75 -0.12 0.2; dur: 430; delay: 500; easing: easeOutCubic"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
-            <a-plane class="clickable" data-href="contact.vcf" width="0.54" height="0.131" material="src: #buttonContact; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="contact.vcf" width="0.66" height="0.22" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com" width="0.54" height="0.131" material="src: #buttonContact; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com" width="0.66" height="0.22" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
 
           <a-entity data-pop position="1.72 0.14 0.18" rotation="0 -7 0" scale="0.001 0.001 0.001"
@@ -565,6 +599,9 @@
     const statusBox = document.getElementById("tracking-status");
     const startButton = document.getElementById("start-camera");
     const tapFlash = document.getElementById("tap-flash");
+    const socialToast = document.getElementById("social-toast");
+    const WECHAT_ID = "cyclone_2006";
+    const QQ_ID = "304514421";
     let started = false;
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
@@ -592,11 +629,76 @@
       tapFlash.classList.add("show");
     }
 
+    function showSocialToast(title, message) {
+      if (!socialToast) return;
+      socialToast.innerHTML = `<strong>${title}</strong><span>${message}</span>`;
+      socialToast.classList.add("show");
+      clearTimeout(showSocialToast.timer);
+      showSocialToast.timer = setTimeout(() => socialToast.classList.remove("show"), 4200);
+    }
+
+    async function copyText(text) {
+      if (!text) return false;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (_) {
+      }
+
+      try {
+        const input = document.createElement("textarea");
+        input.value = text;
+        input.setAttribute("readonly", "");
+        input.style.position = "fixed";
+        input.style.left = "-9999px";
+        document.body.appendChild(input);
+        input.select();
+        const copied = document.execCommand("copy");
+        input.remove();
+        return copied;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function socialActionForHref(href) {
+      if (href.startsWith("weixin://")) {
+        return {
+          appName: "微信",
+          idName: "微信号",
+          idValue: WECHAT_ID,
+          status: "正在打开微信",
+          hint: "微信号已复制，如果没有自动跳转，请打开微信搜索添加"
+        };
+      }
+      if (href.startsWith("mqqwpa://") || href.startsWith("tencent://")) {
+        return {
+          appName: "QQ",
+          idName: "QQ号",
+          idValue: QQ_ID,
+          status: "正在打开 QQ",
+          hint: "QQ号已复制，如果没有自动跳转，请打开 QQ 搜索添加"
+        };
+      }
+      return null;
+    }
+
     function openAction(href, x, y) {
       if (!href) return;
       flashTap(x, y);
       if (navigator.vibrate) navigator.vibrate(18);
-      setStatus("正在打开", "如果没有跳转，请点底部快捷按钮", true);
+      const social = socialActionForHref(href);
+      if (social) {
+        copyText(social.idValue).then((copied) => {
+          const copyMessage = copied ? `${social.idName}已复制：${social.idValue}` : `${social.idName}：${social.idValue}`;
+          showSocialToast(social.status, `${copyMessage}。${social.hint}`);
+        });
+        setStatus(social.status, `${social.idName} ${social.idValue}`, true);
+      } else {
+        setStatus("正在打开", "如果没有跳转，请再点一次按钮", true);
+      }
       setTimeout(() => {
         window.location.href = href;
       }, 90);
@@ -701,7 +803,7 @@
           root.setAttribute("visible", true);
           requestAnimationFrame(() => pops.forEach((el) => el.emit("arshow")));
           setTimeout(() => pops.forEach((el) => el.emit("arfloat")), 1550);
-          setStatus("已识别名片", "可以点击电话、邮件、地址或保存按钮", true);
+          setStatus("已识别名片", "可以点击微信、QQ、电话、邮件或地址", true);
         }
 
         function hidePopups() {
@@ -735,6 +837,13 @@
         setStatus("当前先显示预览", "相机识别未启动，按钮仍可点击", false);
       }
     }
+
+    document.querySelectorAll('a[href^="weixin://"], a[href^="mqqwpa://"], a[href^="tencent://"]').forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        openAction(link.getAttribute("href"), event.clientX, event.clientY);
+      });
+    });
 
     startButton.addEventListener("click", startAR);
     if (new URLSearchParams(location.search).get("camera") === "1") {

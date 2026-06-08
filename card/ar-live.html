@@ -185,9 +185,9 @@
       animation: card-in 760ms cubic-bezier(.16,1,.3,1) both;
     }
     .gallery {
-      left: 6.8%;
-      top: 39%;
-      width: 24%;
+      left: 6.2%;
+      top: 32%;
+      width: 22%;
       aspect-ratio: 16 / 9;
       object-fit: cover;
       animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
@@ -428,8 +428,8 @@
       }
       .gallery {
         left: 5%;
-        top: 31%;
-        width: 45%;
+        top: 36%;
+        width: 39%;
       }
       .identity {
         left: 38%;
@@ -529,12 +529,12 @@
 
       <a-entity id="card-target" mindar-image-target="targetIndex: 0">
         <a-entity id="ar-root" visible="false">
-          <a-entity data-pop position="-0.44 -0.64 0.18" rotation="-5 0 0" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="0 -0.93 0.16" rotation="0 0 0" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 560; delay: 120; easing: easeOutBack"
-            animation__rise="property: position; startEvents: arshow; from: -0.44 -0.68 0.04; to: -0.44 -0.64 0.18; dur: 560; delay: 120; easing: easeOutCubic"
-            animation__float="property: position; startEvents: arfloat; from: -0.44 -0.64 0.18; to: -0.44 -0.61 0.2; dur: 1900; dir: alternate; loop: true; easing: easeInOutSine"
+            animation__rise="property: position; startEvents: arshow; from: 0 -0.99 0.04; to: 0 -0.93 0.16; dur: 560; delay: 120; easing: easeOutCubic"
+            animation__float="property: position; startEvents: arfloat; from: 0 -0.93 0.16; to: 0 -0.9 0.18; dur: 1900; dir: alternate; loop: true; easing: easeInOutSine"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
-            <a-plane width="0.78" height="0.442" material="src: #promoVideo; shader: flat; side: double"></a-plane>
+            <a-plane width="1.55" height="0.872" material="src: #promoVideo; shader: flat; side: double"></a-plane>
           </a-entity>
 
           <a-entity data-pop position="0.72 0.42 0.24" scale="0.001 0.001 0.001"

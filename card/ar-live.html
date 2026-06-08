@@ -188,6 +188,8 @@
       left: 6.8%;
       top: 39%;
       width: 24%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
       animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
     }
     .identity {
@@ -478,7 +480,7 @@
   <main class="scene-preview" id="scene-preview" aria-label="AR 名片布局预览">
     <section class="stage">
       <img class="visual held-card" src="tan-junjia-front-print-ready.png" alt="名片正面">
-      <img class="visual gallery" src="ar-assets/gallery-panel.png" alt="项目卡片预览">
+      <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=11" poster="ar-assets/company-promo-poster.png?v=11" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
       <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
       <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
       <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
@@ -512,7 +514,8 @@
       device-orientation-permission-ui="enabled: false">
       <a-assets timeout="30000">
         <img id="identityFloat" src="ar-assets/identity-float.png">
-        <img id="galleryPanel" src="ar-assets/gallery-panel.png">
+        <img id="promoPoster" src="ar-assets/company-promo-poster.png?v=11">
+        <video id="promoVideo" src="ar-assets/company-promo.mp4?v=11" poster="ar-assets/company-promo-poster.png?v=11" preload="auto" autoplay loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
         <img id="webPanel" src="ar-assets/web-panel.png">
         <img id="buttonWebsite" src="ar-assets/button-website.png?v=10">
         <img id="buttonContact" src="ar-assets/button-contact.png?v=10">
@@ -531,7 +534,7 @@
             animation__rise="property: position; startEvents: arshow; from: -0.44 -0.68 0.04; to: -0.44 -0.64 0.18; dur: 560; delay: 120; easing: easeOutCubic"
             animation__float="property: position; startEvents: arfloat; from: -0.44 -0.64 0.18; to: -0.44 -0.61 0.2; dur: 1900; dir: alternate; loop: true; easing: easeInOutSine"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
-            <a-plane width="0.78" height="0.442" material="src: #galleryPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane width="0.78" height="0.442" material="src: #promoVideo; shader: flat; side: double"></a-plane>
           </a-entity>
 
           <a-entity data-pop position="0.72 0.42 0.24" scale="0.001 0.001 0.001"
@@ -685,6 +688,27 @@
       return null;
     }
 
+    function promoVideos() {
+      return Array.from(document.querySelectorAll(".gallery-video, #promoVideo"));
+    }
+
+    function playPromoVideos() {
+      promoVideos().forEach((video) => {
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(() => {});
+        }
+      });
+    }
+
+    function pauseARPromoVideo() {
+      const video = document.getElementById("promoVideo");
+      if (video) video.pause();
+    }
+
     function openAction(href, x, y) {
       if (!href) return;
       flashTap(x, y);
@@ -723,6 +747,7 @@
 
         document.getElementById("ar-mount").appendChild(document.getElementById("ar-template").content.cloneNode(true));
         document.body.classList.add("camera-mode");
+        playPromoVideos();
 
         const scene = document.getElementById("ar-scene");
         const target = document.getElementById("card-target");
@@ -800,6 +825,7 @@
         }
 
         function showPopups() {
+          playPromoVideos();
           root.setAttribute("visible", true);
           requestAnimationFrame(() => pops.forEach((el) => el.emit("arshow")));
           setTimeout(() => pops.forEach((el) => el.emit("arfloat")), 1550);
@@ -807,6 +833,7 @@
         }
 
         function hidePopups() {
+          pauseARPromoVideo();
           pops.forEach((el) => el.emit("arhide"));
           setTimeout(() => root.setAttribute("visible", false), 220);
           setStatus("对准名片正面", "识别后会自动弹出联系方式", false);
@@ -845,7 +872,18 @@
       });
     });
 
-    startButton.addEventListener("click", startAR);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        pauseARPromoVideo();
+      } else {
+        playPromoVideos();
+      }
+    });
+
+    startButton.addEventListener("click", () => {
+      playPromoVideos();
+      startAR();
+    });
     if (new URLSearchParams(location.search).get("camera") === "1") {
       if (isIOS) {
         setStatus("点击启动识别", "iPhone 需要手动触发相机画面", false);

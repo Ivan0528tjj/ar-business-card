@@ -43,6 +43,12 @@
       justify-content: space-between;
       gap: 10px;
       pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+    body.target-found .hud {
+      opacity: 0;
+      transform: translate3d(0, -10px, 0);
+      pointer-events: none;
     }
     .status {
       min-width: 0;
@@ -103,9 +109,9 @@
       transition: opacity 180ms ease, transform 180ms ease;
     }
     body.target-found .quick-actions-ar {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-      pointer-events: auto;
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+      pointer-events: none;
     }
     .quick-actions-ar a {
       min-height: 50px;
@@ -486,80 +492,69 @@
 
       <a-entity id="card-target" mindar-image-target="targetIndex: 0">
         <a-entity id="ar-root" visible="false">
-          <a-entity id="scan-frame" data-pop position="0 -0.03 0.055" scale="0.001 0.001 0.001"
-            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 520; delay: 20; easing: easeOutBack"
-            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
-            <a-plane width="1.55" height="0.022" position="0 0.41 0" material="color: #c9ad6a; transparent: true; opacity: 0.86; side: double"></a-plane>
-            <a-plane width="1.55" height="0.022" position="0 -0.41 0" material="color: #c9ad6a; transparent: true; opacity: 0.86; side: double"></a-plane>
-            <a-plane width="0.022" height="0.84" position="-0.78 0 0" material="color: #c9ad6a; transparent: true; opacity: 0.78; side: double"></a-plane>
-            <a-plane width="0.022" height="0.84" position="0.78 0 0" material="color: #c9ad6a; transparent: true; opacity: 0.78; side: double"></a-plane>
-            <a-plane width="1.42" height="0.018" position="0 0.32 0.012"
-              material="color: #75b69d; transparent: true; opacity: 0.86; side: double"
-              animation__scan="property: position; from: 0 0.32 0.012; to: 0 -0.32 0.012; dur: 1350; loop: true; dir: alternate; easing: easeInOutSine"></a-plane>
-          </a-entity>
-          <a-entity data-pop position="-0.22 -0.53 0.13" rotation="-8 0 0" scale="0.001 0.001 0.001"
-            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 560; delay: 160; easing: easeOutBack"
-            animation__rise="property: position; startEvents: arshow; from: -0.22 -0.53 0.04; to: -0.22 -0.53 0.13; dur: 560; delay: 160; easing: easeOutCubic"
-            animation__float="property: position; startEvents: arfloat; from: -0.22 -0.53 0.13; to: -0.22 -0.50 0.15; dur: 1900; dir: alternate; loop: true; easing: easeInOutSine"
+          <a-entity data-pop position="-0.44 -0.64 0.18" rotation="-5 0 0" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 560; delay: 120; easing: easeOutBack"
+            animation__rise="property: position; startEvents: arshow; from: -0.44 -0.68 0.04; to: -0.44 -0.64 0.18; dur: 560; delay: 120; easing: easeOutCubic"
+            animation__float="property: position; startEvents: arfloat; from: -0.44 -0.64 0.18; to: -0.44 -0.61 0.2; dur: 1900; dir: alternate; loop: true; easing: easeInOutSine"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
-            <a-plane width="0.58" height="0.328" material="src: #galleryPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane width="0.78" height="0.442" material="src: #galleryPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
           </a-entity>
 
-          <a-entity data-pop position="0.53 0.17 0.16" scale="0.001 0.001 0.001"
-            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 620; delay: 260; easing: easeOutBack"
-            animation__rise="property: position; startEvents: arshow; from: 0.53 0.13 0.04; to: 0.53 0.17 0.16; dur: 620; delay: 260; easing: easeOutCubic"
-            animation__float="property: position; startEvents: arfloat; from: 0.53 0.17 0.16; to: 0.53 0.20 0.18; dur: 2100; dir: alternate; loop: true; easing: easeInOutSine"
+          <a-entity data-pop position="0.72 0.42 0.24" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 620; delay: 220; easing: easeOutBack"
+            animation__rise="property: position; startEvents: arshow; from: 0.62 0.38 0.06; to: 0.72 0.42 0.24; dur: 620; delay: 220; easing: easeOutCubic"
+            animation__float="property: position; startEvents: arfloat; from: 0.72 0.42 0.24; to: 0.72 0.46 0.26; dur: 2100; dir: alternate; loop: true; easing: easeInOutSine"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 160; easing: easeInQuad">
-            <a-plane width="0.68" height="0.272" material="src: #identityFloat; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane width="0.86" height="0.344" material="src: #identityFloat; transparent: true; alphaTest: 0.02; side: double"></a-plane>
           </a-entity>
 
-          <a-entity data-pop position="0.58 -0.16 0.14" scale="0.001 0.001 0.001"
-            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 430; easing: easeOutBack"
-            animation__rise="property: position; startEvents: arshow; from: 0.58 -0.18 0.04; to: 0.58 -0.16 0.14; dur: 430; delay: 430; easing: easeOutCubic"
+          <a-entity data-pop position="0.75 0.08 0.2" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 390; easing: easeOutBack"
+            animation__rise="property: position; startEvents: arshow; from: 0.75 0.04 0.06; to: 0.75 0.08 0.2; dur: 430; delay: 390; easing: easeOutCubic"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
-            <a-plane class="clickable" data-href="wechat.html" width="0.38" height="0.092" material="src: #buttonWebsite; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="wechat.html" width="0.5" height="0.18" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="wechat.html" width="0.54" height="0.131" material="src: #buttonWebsite; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="wechat.html" width="0.66" height="0.22" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
 
-          <a-entity data-pop position="0.58 -0.31 0.14" scale="0.001 0.001 0.001"
-            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 540; easing: easeOutBack"
-            animation__rise="property: position; startEvents: arshow; from: 0.58 -0.33 0.04; to: 0.58 -0.31 0.14; dur: 430; delay: 540; easing: easeOutCubic"
+          <a-entity data-pop position="0.75 -0.12 0.2" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 430; delay: 500; easing: easeOutBack"
+            animation__rise="property: position; startEvents: arshow; from: 0.75 -0.16 0.06; to: 0.75 -0.12 0.2; dur: 430; delay: 500; easing: easeOutCubic"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 140; easing: easeInQuad">
-            <a-plane class="clickable" data-href="contact.vcf" width="0.38" height="0.092" material="src: #buttonContact; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="contact.vcf" width="0.5" height="0.18" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="contact.vcf" width="0.54" height="0.131" material="src: #buttonContact; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="contact.vcf" width="0.66" height="0.22" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
 
-          <a-entity data-pop position="1.28 0.0 0.12" rotation="0 -8 0" scale="0.001 0.001 0.001"
-            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 680; delay: 620; easing: easeOutBack"
-            animation__rise="property: position; startEvents: arshow; from: 1.1 -0.02 0.04; to: 1.28 0 0.12; dur: 680; delay: 620; easing: easeOutCubic"
-            animation__float="property: position; startEvents: arfloat; from: 1.28 0 0.12; to: 1.28 0.03 0.14; dur: 2300; dir: alternate; loop: true; easing: easeInOutSine"
+          <a-entity data-pop position="1.72 0.14 0.18" rotation="0 -7 0" scale="0.001 0.001 0.001"
+            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 680; delay: 610; easing: easeOutBack"
+            animation__rise="property: position; startEvents: arshow; from: 1.38 0.1 0.04; to: 1.72 0.14 0.18; dur: 680; delay: 610; easing: easeOutCubic"
+            animation__float="property: position; startEvents: arfloat; from: 1.72 0.14 0.18; to: 1.72 0.18 0.2; dur: 2300; dir: alternate; loop: true; easing: easeInOutSine"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 170; easing: easeInQuad">
-            <a-plane width="0.9" height="0.622" material="src: #webPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane width="1.28" height="0.884" material="src: #webPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
           </a-entity>
 
-          <a-entity data-pop position="-0.36 -0.86 0.18" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="-0.54 -1.08 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 720; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
-            <a-plane class="clickable" data-href="tel:13692233879" width="0.15" height="0.15" material="src: #iconCall; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="tel:13692233879" width="0.26" height="0.26" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="tel:13692233879" width="0.22" height="0.22" material="src: #iconCall; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="tel:13692233879" width="0.34" height="0.34" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
-          <a-entity data-pop position="-0.12 -0.86 0.18" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="-0.14 -1.08 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 800; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
-            <a-plane class="clickable" data-href="mailto:ivan.tan0528@gmail.com" width="0.15" height="0.15" material="src: #iconMail; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="mailto:ivan.tan0528@gmail.com" width="0.26" height="0.26" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="mailto:ivan.tan0528@gmail.com" width="0.22" height="0.22" material="src: #iconMail; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="mailto:ivan.tan0528@gmail.com" width="0.34" height="0.34" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
-          <a-entity data-pop position="0.12 -0.86 0.18" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="0.26 -1.08 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 880; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
-            <a-plane class="clickable" data-href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" width="0.15" height="0.15" material="src: #iconMap; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" width="0.26" height="0.26" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" width="0.22" height="0.22" material="src: #iconMap; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" width="0.34" height="0.34" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
-          <a-entity data-pop position="0.36 -0.86 0.18" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="0.66 -1.08 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 960; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
-            <a-plane class="clickable" data-href="contact.vcf" width="0.15" height="0.15" material="src: #iconSave; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-            <a-plane class="clickable" data-href="contact.vcf" width="0.26" height="0.26" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
+            <a-plane class="clickable" data-href="contact.vcf" width="0.22" height="0.22" material="src: #iconSave; transparent: true; alphaTest: 0.02; side: double"></a-plane>
+            <a-plane class="clickable" data-href="contact.vcf" width="0.34" height="0.34" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
         </a-entity>
       </a-entity>

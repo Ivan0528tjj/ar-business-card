@@ -248,6 +248,23 @@
     #ar-mount {
       display: none;
     }
+    body.camera-mode #ar-mount {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: transparent;
+    }
+    body.camera-mode #ar-mount video {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      object-fit: cover !important;
+      background: transparent !important;
+    }
+    body.camera-mode #ar-mount canvas,
+    body.camera-mode #ar-mount .a-canvas {
+      background: transparent !important;
+    }
     body.camera-mode .scene-preview {
       display: none;
     }
@@ -462,6 +479,7 @@
     const statusBox = document.getElementById("tracking-status");
     const startButton = document.getElementById("start-camera");
     let started = false;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
     function setStatus(title, message, found) {
       document.body.classList.toggle("target-found", Boolean(found));
@@ -524,8 +542,8 @@
           });
         });
 
-        startButton.textContent = "预览";
-        startButton.onclick = () => window.location.href = "ar.html";
+        startButton.textContent = "重启";
+        startButton.onclick = () => window.location.reload();
         setStatus("对准名片背面", "识别后会自动弹出联系方式", false);
       } catch (error) {
         console.error(error);
@@ -537,7 +555,13 @@
     }
 
     startButton.addEventListener("click", startAR);
-    if (new URLSearchParams(location.search).get("camera") === "1") startAR();
+    if (new URLSearchParams(location.search).get("camera") === "1") {
+      if (isIOS) {
+        setStatus("点击启动识别", "iPhone 需要手动触发相机画面", false);
+      } else {
+        startAR();
+      }
+    }
   </script>
 </body>
 </html>

@@ -380,7 +380,7 @@
 
   <main class="scene-preview" id="scene-preview" aria-label="AR 名片布局预览">
     <section class="stage">
-      <img class="visual held-card" src="tan-junjia-ar-back.png" alt="名片背面">
+      <img class="visual held-card" src="tan-junjia-front-print-ready.png" alt="名片正面">
       <img class="visual gallery" src="ar-assets/gallery-panel.png" alt="项目卡片预览">
       <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
       <a class="visual pill website" href="wechat.html"><img src="ar-assets/button-website.png" alt="打开名片页"></a>
@@ -399,7 +399,7 @@
   <template id="ar-template">
     <a-scene
       id="ar-scene"
-      mindar-image="imageTargetSrc: targets/dinghui-card-back.mind; filterMinCF: 0.04; filterBeta: 8; warmupTolerance: 3; missTolerance: 8;"
+      mindar-image="imageTargetSrc: targets/dinghui-card-front.mind; filterMinCF: 0.04; filterBeta: 8; warmupTolerance: 3; missTolerance: 8;"
       color-space="sRGB"
       renderer="colorManagement: true; physicallyCorrectLights: false; alpha: true;"
       vr-mode-ui="enabled: false"
@@ -529,7 +529,7 @@
         function hidePopups() {
           pops.forEach((el) => el.emit("arhide"));
           setTimeout(() => root.setAttribute("visible", false), 220);
-          setStatus("对准名片背面", "识别后会自动弹出联系方式", false);
+          setStatus("对准名片正面", "识别后会自动弹出联系方式", false);
         }
 
         target.addEventListener("targetFound", showPopups);
@@ -544,7 +544,7 @@
 
         startButton.textContent = "重启";
         startButton.onclick = () => window.location.reload();
-        setStatus("对准名片背面", "识别后会自动弹出联系方式", false);
+        setStatus("对准名片正面", "识别后会自动弹出联系方式", false);
       } catch (error) {
         console.error(error);
         started = false;

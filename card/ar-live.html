@@ -198,13 +198,6 @@
       width: 34%;
       animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
     }
-    .web-panel {
-      right: 3.2%;
-      top: 12%;
-      width: 43%;
-      transform-origin: left center;
-      animation: web-in 760ms 760ms cubic-bezier(.16,1,.3,1) both;
-    }
     .pill {
       left: 36%;
       width: 21%;
@@ -233,10 +226,10 @@
       height: 100%;
       display: block;
     }
-    .icon-call { left: 12%; top: 75%; animation-delay: 1160ms; }
-    .icon-mail { left: 22.5%; top: 75%; animation-delay: 1240ms; }
-    .icon-map { left: 33%; top: 75%; animation-delay: 1320ms; }
-    .icon-save { left: 43.5%; top: 75%; animation-delay: 1400ms; }
+    .icon-call { left: 13%; top: 77%; animation-delay: 1160ms; }
+    .icon-mail { left: 23%; top: 77%; animation-delay: 1240ms; }
+    .icon-map { left: 33%; top: 77%; animation-delay: 1320ms; }
+    .icon-save { left: 43%; top: 77%; animation-delay: 1400ms; }
     .quick-strip {
       position: absolute;
       left: 11%;
@@ -442,23 +435,17 @@
       }
       .pill.website { top: 38%; }
       .pill.contact { top: 48%; }
-      .web-panel {
-        left: 9%;
-        right: auto;
-        top: 56%;
-        width: 86%;
-      }
       .quick-strip {
         display: none;
       }
       .icon-link {
         width: 17%;
-        top: 87%;
+        top: 84%;
       }
-      .icon-call { left: 10%; }
+      .icon-call { left: 11%; }
       .icon-mail { left: 31%; }
-      .icon-map { left: 52%; }
-      .icon-save { left: 73%; }
+      .icon-map { left: 51%; }
+      .icon-save { left: 71%; }
       .hint {
         display: none;
       }
@@ -479,12 +466,11 @@
 
   <main class="scene-preview" id="scene-preview" aria-label="AR 名片布局预览">
     <section class="stage">
-      <img class="visual held-card" src="tan-junjia-front-print-ready.png" alt="名片正面">
+      <img class="visual held-card" src="dinghui-card-front-black-gold.png?v=16" alt="新版名片正面">
       <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
       <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
       <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
       <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
-      <img class="visual web-panel" src="ar-assets/web-panel.png" alt="资料页面板">
       <div class="quick-strip"><strong>广东鼎汇 AR 名片</strong><span>电话 / 邮件 / 地址 / 保存联系人</span></div>
       <a class="icon-link icon-call" href="tel:13692233879"><img src="ar-assets/icon-call.png" alt="拨打电话"></a>
       <a class="icon-link icon-mail" href="mailto:ivan.tan0528@gmail.com"><img src="ar-assets/icon-mail.png" alt="发送邮件"></a>
@@ -516,7 +502,6 @@
         <img id="identityFloat" src="ar-assets/identity-float.png">
         <img id="promoPoster" src="ar-assets/company-promo-poster.png?v=12">
         <video id="promoVideo" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" preload="auto" autoplay loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <img id="webPanel" src="ar-assets/web-panel.png">
         <img id="buttonWebsite" src="ar-assets/button-website.png?v=10">
         <img id="buttonContact" src="ar-assets/button-contact.png?v=10">
         <img id="iconCall" src="ar-assets/icon-call.png">
@@ -561,33 +546,25 @@
             <a-plane class="clickable" data-href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com" width="0.66" height="0.22" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
 
-          <a-entity data-pop position="1.72 0.14 0.18" rotation="0 -7 0" scale="0.001 0.001 0.001"
-            animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 680; delay: 610; easing: easeOutBack"
-            animation__rise="property: position; startEvents: arshow; from: 1.38 0.1 0.04; to: 1.72 0.14 0.18; dur: 680; delay: 610; easing: easeOutCubic"
-            animation__float="property: position; startEvents: arfloat; from: 1.72 0.14 0.18; to: 1.72 0.18 0.2; dur: 2300; dir: alternate; loop: true; easing: easeInOutSine"
-            animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 170; easing: easeInQuad">
-            <a-plane width="1.28" height="0.884" material="src: #webPanel; transparent: true; alphaTest: 0.02; side: double"></a-plane>
-          </a-entity>
-
-          <a-entity data-pop position="-0.45 -1.68 0.24" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="-0.48 -1.62 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 720; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
             <a-plane class="clickable" data-href="tel:13692233879" width="0.22" height="0.22" material="src: #iconCall; transparent: true; alphaTest: 0.02; side: double"></a-plane>
             <a-plane class="clickable" data-href="tel:13692233879" width="0.34" height="0.34" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
-          <a-entity data-pop position="-0.15 -1.68 0.24" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="-0.16 -1.62 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 800; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
             <a-plane class="clickable" data-href="mailto:ivan.tan0528@gmail.com" width="0.22" height="0.22" material="src: #iconMail; transparent: true; alphaTest: 0.02; side: double"></a-plane>
             <a-plane class="clickable" data-href="mailto:ivan.tan0528@gmail.com" width="0.34" height="0.34" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
-          <a-entity data-pop position="0.15 -1.68 0.24" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="0.16 -1.62 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 880; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
             <a-plane class="clickable" data-href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" width="0.22" height="0.22" material="src: #iconMap; transparent: true; alphaTest: 0.02; side: double"></a-plane>
             <a-plane class="clickable" data-href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8" width="0.34" height="0.34" position="0 0 0.01" material="color: #ffffff; transparent: true; opacity: 0.001; side: double"></a-plane>
           </a-entity>
-          <a-entity data-pop position="0.45 -1.68 0.24" scale="0.001 0.001 0.001"
+          <a-entity data-pop position="0.48 -1.62 0.24" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 360; delay: 960; easing: easeOutBack"
             animation__hide="property: scale; startEvents: arhide; to: 0.001 0.001 0.001; dur: 120; easing: easeInQuad">
             <a-plane class="clickable" data-href="contact.vcf" width="0.22" height="0.22" material="src: #iconSave; transparent: true; alphaTest: 0.02; side: double"></a-plane>

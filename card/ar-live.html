@@ -493,7 +493,7 @@
   <template id="ar-template">
     <a-scene
       id="ar-scene"
-      mindar-image="imageTargetSrc: targets/dinghui-card-front.mind; filterMinCF: 0.04; filterBeta: 8; warmupTolerance: 3; missTolerance: 8;"
+      mindar-image="imageTargetSrc: targets/dinghui-card-front-back.mind?v=17; filterMinCF: 0.04; filterBeta: 8; warmupTolerance: 3; missTolerance: 8;"
       color-space="sRGB"
       renderer="colorManagement: true; physicallyCorrectLights: false; alpha: true;"
       vr-mode-ui="enabled: false"
@@ -512,8 +512,8 @@
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-camera>
 
-      <a-entity id="card-target" mindar-image-target="targetIndex: 0">
-        <a-entity id="ar-root" visible="false">
+      <a-entity class="card-target" data-target-side="正面" mindar-image-target="targetIndex: 0">
+        <a-entity class="ar-root" visible="false">
           <a-entity data-pop position="0 -1.12 0.16" rotation="0 0 0" scale="0.001 0.001 0.001"
             animation__show="property: scale; startEvents: arshow; from: 0.001 0.001 0.001; to: 1 1 1; dur: 560; delay: 120; easing: easeOutBack"
             animation__rise="property: position; startEvents: arshow; from: 0 -1.18 0.04; to: 0 -1.12 0.16; dur: 560; delay: 120; easing: easeOutCubic"
@@ -722,18 +722,38 @@
         await loadScript("vendor/aframe.min.js");
         await loadScript("vendor/mindar-image-aframe.prod.js");
 
-        document.getElementById("ar-mount").appendChild(document.getElementById("ar-template").content.cloneNode(true));
+        const arFragment = document.getElementById("ar-template").content.cloneNode(true);
+        const frontTarget = arFragment.querySelector(".card-target");
+        if (frontTarget) {
+          const backTarget = frontTarget.cloneNode(true);
+          backTarget.setAttribute("data-target-side", "背面");
+          backTarget.setAttribute("mindar-image-target", "targetIndex: 1");
+          frontTarget.after(backTarget);
+        }
+        document.getElementById("ar-mount").appendChild(arFragment);
         document.body.classList.add("camera-mode");
         playPromoVideos();
 
         const scene = document.getElementById("ar-scene");
-        const target = document.getElementById("card-target");
-        const root = document.getElementById("ar-root");
-        const pops = Array.from(document.querySelectorAll("[data-pop]"));
+        const targets = Array.from(document.querySelectorAll(".card-target"));
+        const roots = Array.from(document.querySelectorAll(".ar-root"));
         const tapRaycaster = new AFRAME.THREE.Raycaster();
         const tapPoint = new AFRAME.THREE.Vector2();
         let lastTapTime = 0;
         let clickableEls = [];
+
+        function anyRootVisible() {
+          return roots.some((root) => root.object3D.visible);
+        }
+
+        function isEffectivelyVisible(object3D) {
+          let current = object3D;
+          while (current) {
+            if (current.visible === false) return false;
+            current = current.parent;
+          }
+          return true;
+        }
 
         function refreshClickTargets() {
           clickableEls = Array.from(document.querySelectorAll("[data-href]"));
@@ -761,7 +781,7 @@
           if (now - lastTapTime < 260) return;
 
           const point = event.changedTouches ? event.changedTouches[0] : event;
-          if (!point || !root.object3D.visible || !scene.camera) return;
+          if (!point || !anyRootVisible() || !scene.camera) return;
 
           const canvas = scene.canvas || scene.querySelector("canvas");
           if (!canvas) return;
@@ -774,7 +794,7 @@
           const meshes = [];
           clickableEls.forEach((el) => {
             el.object3D.traverse((obj) => {
-              if (obj.isMesh && obj.visible) meshes.push(obj);
+              if (obj.isMesh && isEffectivelyVisible(obj)) meshes.push(obj);
             });
           });
 
@@ -801,23 +821,34 @@
           canvas.addEventListener("click", handleSceneTap, { passive: false });
         }
 
-        function showPopups() {
+        function showPopups(event) {
+          const targetEl = event.currentTarget;
+          const root = targetEl.querySelector(".ar-root");
+          const pops = Array.from(targetEl.querySelectorAll("[data-pop]"));
+          const side = targetEl.getAttribute("data-target-side") || "名片";
           playPromoVideos();
           root.setAttribute("visible", true);
           requestAnimationFrame(() => pops.forEach((el) => el.emit("arshow")));
           setTimeout(() => pops.forEach((el) => el.emit("arfloat")), 1550);
-          setStatus("已识别名片", "可以点击微信、QQ、电话、邮件或地址", true);
+          setStatus(`已识别${side}`, "可以点击微信、QQ、电话、邮件或地址", true);
         }
 
-        function hidePopups() {
-          pauseARPromoVideo();
+        function hidePopups(event) {
+          const targetEl = event.currentTarget;
+          const root = targetEl.querySelector(".ar-root");
+          const pops = Array.from(targetEl.querySelectorAll("[data-pop]"));
           pops.forEach((el) => el.emit("arhide"));
           setTimeout(() => root.setAttribute("visible", false), 220);
-          setStatus("对准名片正面", "识别后会自动弹出联系方式", false);
+          setTimeout(() => {
+            if (!anyRootVisible()) pauseARPromoVideo();
+          }, 260);
+          setStatus("对准名片正面或背面", "识别后会自动弹出联系方式", false);
         }
 
-        target.addEventListener("targetFound", showPopups);
-        target.addEventListener("targetLost", hidePopups);
+        targets.forEach((target) => {
+          target.addEventListener("targetFound", showPopups);
+          target.addEventListener("targetLost", hidePopups);
+        });
 
         scene.addEventListener("loaded", bindSceneTap);
         scene.addEventListener("renderstart", () => setTimeout(bindSceneTap, 0), { once: true });
@@ -832,7 +863,7 @@
 
         startButton.textContent = "重启";
         startButton.onclick = () => window.location.reload();
-        setStatus("对准名片正面", "识别后会自动弹出联系方式", false);
+        setStatus("对准名片正面或背面", "识别后会自动弹出联系方式", false);
       } catch (error) {
         console.error(error);
         started = false;

@@ -390,42 +390,39 @@
       }
       .stage {
         width: 100vw;
-        aspect-ratio: auto;
-        min-height: calc(100svh - 64px);
+        aspect-ratio: 16 / 9;
+        min-height: auto;
         border-left: 0;
         border-right: 0;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto auto auto auto;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr auto;
         grid-template-areas:
-          "cardf"
-          "cardb"
-          "video"
-          "identity"
-          "wechat"
-          "qq"
-          "icons";
-        gap: 10px;
-        padding: 12px;
-        align-items: start;
+          "cardf    identity"
+          "cardb    wechat"
+          "video    qq"
+          "icons    icons";
+        gap: 6px;
+        padding: 8px;
+        align-items: center;
       }
       .held-card {
-        width: 75%;
+        width: 95%;
         justify-self: center;
       }
       .card-back {
-        width: 75%;
+        width: 95%;
         justify-self: center;
       }
       .gallery {
-        width: 80%;
+        width: 95%;
         justify-self: center;
       }
       .identity {
-        width: 80%;
+        width: 90%;
         justify-self: center;
       }
       .pill {
-        width: 55%;
+        width: 85%;
         justify-self: center;
       }
       .pill.website {

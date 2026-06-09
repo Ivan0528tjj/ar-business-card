@@ -145,9 +145,20 @@
     .stage {
       position: relative;
       width: min(1180px, 100%);
-      aspect-ratio: 16 / 8.75;
       min-height: 520px;
       overflow: hidden;
+      display: grid;
+      grid-template-columns: 35fr 65fr;
+      grid-template-rows: auto auto auto auto auto;
+      grid-template-areas:
+        "card    identity"
+        "video   pills"
+        "strip   strip"
+        "icons   icons"
+        "hint    hint";
+      gap: 0;
+      padding: clamp(16px, 3%, 32px);
+      align-items: center;
       border: 1px solid rgba(255,255,255,.22);
       background:
         radial-gradient(circle at 28% 22%, rgba(255,255,255,.16), transparent 20%),
@@ -164,60 +175,63 @@
       opacity: .75;
     }
     .visual {
-      position: absolute;
       display: block;
       filter: drop-shadow(0 22px 34px rgba(0,0,0,.34));
       opacity: 0;
-      transform-origin: center;
       animation-fill-mode: both;
       z-index: 2;
+      max-width: 100%;
+      height: auto;
     }
     .visual img {
       width: 100%;
       display: block;
     }
     .held-card {
-      left: 6.2%;
-      top: 12%;
-      width: 22%;
+      grid-area: card;
+      width: 100%;
       opacity: 1;
-      transform: rotate(2.5deg);
       animation: card-in 760ms cubic-bezier(.16,1,.3,1) both;
     }
     .gallery {
-      left: 6.2%;
-      top: 32%;
-      width: 22%;
+      grid-area: video;
+      width: 100%;
       aspect-ratio: 16 / 9;
       object-fit: cover;
       animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
     }
     .identity {
-      left: 29%;
-      top: 15%;
-      width: 34%;
+      grid-area: identity;
+      width: 85%;
+      justify-self: center;
       animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
     }
     .pill {
-      left: 36%;
-      width: 21%;
+      width: 75%;
       animation: pop-center 540ms cubic-bezier(.2,1.12,.3,1) both;
     }
+    .pills-stack {
+      grid-area: pills;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10%;
+      height: 100%;
+    }
     .pill.website {
-      top: 39%;
       animation-delay: 930ms;
     }
     .pill.contact {
-      top: 52%;
       animation-delay: 1050ms;
     }
     .icon-link {
-      position: absolute;
-      width: 7.1%;
+      grid-area: icons;
+      width: auto;
+      max-width: 60px;
       aspect-ratio: 1;
       z-index: 5;
       opacity: 0;
-      transform-origin: center;
       filter: drop-shadow(0 16px 24px rgba(0,0,0,.34));
       animation: icon-in 460ms cubic-bezier(.2,1.18,.3,1) both;
     }
@@ -226,17 +240,26 @@
       height: 100%;
       display: block;
     }
-    .icon-call { left: 13%; top: 77%; animation-delay: 1160ms; }
-    .icon-mail { left: 23%; top: 77%; animation-delay: 1240ms; }
-    .icon-map { left: 33%; top: 77%; animation-delay: 1320ms; }
-    .icon-save { left: 43%; top: 77%; animation-delay: 1400ms; }
+    .stage-icons {
+      grid-area: icons;
+      display: flex;
+      justify-content: center;
+      gap: clamp(12px, 4%, 40px);
+      align-items: center;
+    }
+    .icon-call { animation-delay: 1160ms; }
+    .icon-mail { animation-delay: 1240ms; }
+    .icon-map { animation-delay: 1320ms; }
+    .icon-save { animation-delay: 1400ms; }
     .quick-strip {
-      position: absolute;
-      left: 11%;
-      top: 69.5%;
-      width: 39%;
+      grid-area: strip;
+      position: relative;
+      width: 100%;
       min-height: 76px;
       z-index: 1;
+      display: flex;
+      align-items: center;
+      padding: 12px 16px 12px 130px;
       border: 1px solid rgba(255,255,255,.72);
       background: rgba(7,8,8,.76);
       box-shadow: 0 18px 40px rgba(0,0,0,.24);
@@ -244,16 +267,13 @@
       animation: strip-in 520ms 1090ms cubic-bezier(.2,1.08,.3,1) both;
     }
     .quick-strip strong {
-      position: absolute;
-      left: 124px;
-      top: 17px;
+      display: block;
       font-size: 22px;
       line-height: 1.1;
     }
     .quick-strip span {
-      position: absolute;
-      left: 124px;
-      top: 46px;
+      display: block;
+      margin-top: 2px;
       color: rgba(255,255,255,.78);
       font-size: 15px;
     }
@@ -261,7 +281,8 @@
     .quick-strip::after {
       content: "";
       position: absolute;
-      top: 22px;
+      top: 50%;
+      transform: translateY(-50%);
       width: 52px;
       height: 52px;
       border-radius: 50%;
@@ -269,10 +290,14 @@
     }
     .quick-strip::before { left: 22px; }
     .quick-strip::after { left: 60px; background: var(--ink); }
+    .quick-strip-text {
+      display: flex;
+      flex-direction: column;
+    }
     .hint {
-      position: absolute;
-      right: 20px;
-      bottom: 16px;
+      grid-area: hint;
+      justify-self: end;
+      align-self: end;
       z-index: 4;
       color: rgba(255,255,255,.72);
       font-size: 12px;
@@ -362,8 +387,8 @@
       line-height: 1.45;
     }
     @keyframes card-in {
-      from { opacity: 0; transform: translate3d(-24px, -12px, 0) rotate(-4deg) scale(.92); }
-      to { opacity: 1; transform: translate3d(0, 0, 0) rotate(2.5deg) scale(1); }
+      from { opacity: 0; transform: translate3d(-24px, -12px, 0) scale(.92); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
     }
     @keyframes pop-left {
       from { opacity: 0; transform: translate3d(-26px, 18px, 0) scale(.74); }
@@ -410,42 +435,71 @@
       .stage {
         width: 100vw;
         min-height: calc(100svh - 64px);
-        aspect-ratio: auto;
         border-left: 0;
         border-right: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto auto;
+        grid-template-areas:
+          "card"
+          "identity"
+          "video"
+          "pills"
+          "strip"
+          "icons";
+        gap: 8px;
+        padding: 12px;
+        align-items: start;
       }
       .held-card {
-        left: 5%;
-        top: 10%;
-        width: 39%;
+        width: 80%;
+        justify-self: center;
       }
       .gallery {
-        left: 5%;
-        top: 36%;
-        width: 39%;
+        width: 80%;
+        justify-self: center;
       }
       .identity {
-        left: 38%;
-        top: 9%;
-        width: 58%;
+        width: 85%;
+        justify-self: center;
       }
       .pill {
-        left: 47%;
-        width: 47%;
+        width: 65%;
       }
-      .pill.website { top: 38%; }
-      .pill.contact { top: 48%; }
+      .pills-stack {
+        grid-area: pills;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        height: auto;
+      }
       .quick-strip {
-        display: none;
+        display: flex;
+        padding: 10px 12px 10px 100px;
+      }
+      .quick-strip strong {
+        font-size: 16px;
+      }
+      .quick-strip span {
+        font-size: 12px;
+      }
+      .quick-strip::before,
+      .quick-strip::after {
+        width: 36px;
+        height: 36px;
+      }
+      .quick-strip::before { left: 14px; }
+      .quick-strip::after { left: 42px; }
+      .stage-icons {
+        gap: clamp(8px, 3%, 24px);
       }
       .icon-link {
-        width: 17%;
-        top: 84%;
+        max-width: 44px;
       }
-      .icon-call { left: 11%; }
-      .icon-mail { left: 31%; }
-      .icon-map { left: 51%; }
-      .icon-save { left: 71%; }
+      .icon-call { }
+      .icon-mail { }
+      .icon-map { }
+      .icon-save { }
       .hint {
         display: none;
       }
@@ -469,13 +523,17 @@
       <img class="visual held-card" src="dinghui-card-front-black-gold.png?v=16" alt="新版名片正面">
       <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
       <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
+      <div class="pills-stack">
       <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
       <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
-      <div class="quick-strip"><strong>广东鼎汇 AR 名片</strong><span>电话 / 邮件 / 地址 / 保存联系人</span></div>
+      </div>
+      <div class="quick-strip"><div class="quick-strip-text"><strong>广东鼎汇 AR 名片</strong><span>电话 / 邮件 / 地址 / 保存联系人</span></div></div>
+      <div class="stage-icons">
       <a class="icon-link icon-call" href="tel:13692233879"><img src="ar-assets/icon-call.png" alt="拨打电话"></a>
       <a class="icon-link icon-mail" href="mailto:ivan.tan0528@gmail.com"><img src="ar-assets/icon-mail.png" alt="发送邮件"></a>
       <a class="icon-link icon-map" href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8"><img src="ar-assets/icon-map.png" alt="打开地址"></a>
       <a class="icon-link icon-save" href="contact.vcf"><img src="ar-assets/icon-save.png" alt="保存联系人"></a>
+      </div>
       <div class="hint">GitHub Pages HTTPS / AR BUSINESS CARD</div>
     </section>
   </main>

@@ -145,7 +145,7 @@
     .stage {
       position: relative;
       width: min(1180px, 100%);
-      min-height: 520px;
+      aspect-ratio: 16 / 7;
       overflow: hidden;
       display: grid;
       grid-template-columns: 35fr 65fr;
@@ -156,8 +156,8 @@
         "video    qq"
         "icons    icons"
         "hint     hint";
-      gap: clamp(8px, 2%, 20px);
-      padding: clamp(16px, 3%, 32px);
+      gap: clamp(4px, 1.5%, 14px);
+      padding: clamp(10px, 2%, 24px);
       align-items: center;
       border: 1px solid rgba(255,255,255,.22);
       background:
@@ -390,6 +390,7 @@
       }
       .stage {
         width: 100vw;
+        aspect-ratio: auto;
         min-height: calc(100svh - 64px);
         border-left: 0;
         border-right: 0;

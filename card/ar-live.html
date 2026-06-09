@@ -181,10 +181,13 @@
       animation-fill-mode: both;
       z-index: 2;
       max-width: 100%;
-      height: auto;
+      max-height: 100%;
+      overflow: hidden;
     }
     .visual img {
       width: 100%;
+      height: 100%;
+      object-fit: contain;
       display: block;
     }
     .held-card {
@@ -462,7 +465,7 @@
   <main class="scene-preview" id="scene-preview" aria-label="AR 名片布局预览">
     <section class="stage">
       <img class="visual held-card" src="dinghui-card-front-black-gold.png?v=16" alt="新版名片正面">
-      <img class="visual card-back" src="tan-junjia-ar-back.png" alt="新版名片反面">
+      <img class="visual card-back" src="tan-junjia-ar-back-new.jpg" alt="新版名片反面">
       <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
       <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
       <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>

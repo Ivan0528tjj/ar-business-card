@@ -147,23 +147,48 @@
       width: min(1180px, 100%);
       aspect-ratio: 16 / 7;
       overflow: hidden;
-      display: grid;
-      grid-template-columns: 35fr 65fr;
-      grid-template-rows: 1fr 1fr 1fr auto auto;
-      grid-template-areas:
-        "cardf    identity"
-        "cardb    wechat"
-        "video    qq"
-        "icons    icons"
-        "hint     hint";
+      display: flex;
+      flex-direction: column;
       gap: clamp(4px, 1.5%, 14px);
       padding: clamp(10px, 2%, 24px);
-      align-items: center;
-      border: 1px solid rgba(255,255,255,.22);
+      border: 2px solid #ff3344;
       background:
         radial-gradient(circle at 28% 22%, rgba(255,255,255,.16), transparent 20%),
         linear-gradient(18deg, rgba(255,255,255,.06), rgba(0,0,0,.14));
       box-shadow: 0 34px 90px rgba(0,0,0,.38);
+    }
+    .stage-body {
+      display: flex;
+      flex: 1 1 auto;
+      gap: clamp(4px, 1.5%, 14px);
+      min-height: 0;
+    }
+    .stage-left {
+      flex: 0 0 35%;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 1.5%, 14px);
+    }
+    .stage-left > * {
+      flex: 1 1 0;
+      min-height: 0;
+    }
+    .stage-right {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 1.5%, 14px);
+    }
+    .stage-right > * {
+      flex: 1 1 0;
+      min-height: 0;
+    }
+    .stage-bottom {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: clamp(12px, 4%, 40px);
+      align-items: center;
     }
     .stage::before {
       content: "";
@@ -181,10 +206,8 @@
       opacity: 0;
       animation-fill-mode: both;
       z-index: 2;
-      min-width: 0;
-      min-height: 0;
-      max-width: 100%;
-      max-height: 100%;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
     }
     .visual img {
@@ -194,41 +217,30 @@
       display: block;
     }
     .held-card {
-      grid-area: cardf;
-      width: 100%;
       opacity: 1;
       animation: card-in 760ms cubic-bezier(.16,1,.3,1) both;
     }
     .card-back {
-      grid-area: cardb;
-      width: 100%;
       opacity: 1;
       animation: card-in 760ms 200ms cubic-bezier(.16,1,.3,1) both;
     }
     .gallery {
-      grid-area: video;
-      width: 100%;
-      min-width: 0;
-      min-height: 0;
       animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
     }
     .identity {
-      grid-area: identity;
       width: 85%;
-      justify-self: center;
+      align-self: center;
       animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
     }
     .pill {
       width: 70%;
-      justify-self: center;
+      align-self: center;
       animation: pop-center 540ms cubic-bezier(.2,1.12,.3,1) both;
     }
     .pill.website {
-      grid-area: wechat;
       animation-delay: 930ms;
     }
     .pill.contact {
-      grid-area: qq;
       animation-delay: 1050ms;
     }
     .icon-link {
@@ -246,7 +258,6 @@
       display: block;
     }
     .stage-icons {
-      grid-area: icons;
       display: flex;
       justify-content: center;
       gap: clamp(12px, 4%, 40px);
@@ -257,9 +268,8 @@
     .icon-map { animation-delay: 1320ms; }
     .icon-save { animation-delay: 1400ms; }
     .hint {
-      grid-area: hint;
-      justify-self: end;
-      align-self: end;
+      align-self: flex-end;
+      text-align: right;
       z-index: 4;
       color: rgba(255,255,255,.72);
       font-size: 12px;
@@ -400,44 +410,39 @@
         min-height: auto;
         border-left: 0;
         border-right: 0;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr auto;
-        grid-template-areas:
-          "cardf    identity"
-          "cardb    wechat"
-          "video    qq"
-          "icons    icons";
-        gap: 6px;
         padding: 8px;
-        align-items: center;
+        gap: 6px;
+      }
+      .stage-body {
+        gap: 6px;
+      }
+      .stage-left {
+        flex: 0 0 50%;
+        gap: 4px;
+      }
+      .stage-right {
+        gap: 4px;
       }
       .held-card {
-        width: 95%;
-        justify-self: center;
+        width: 100%;
       }
       .card-back {
-        width: 95%;
-        justify-self: center;
+        width: 100%;
       }
       .gallery {
-        width: 95%;
-        justify-self: center;
+        width: 100%;
       }
       .identity {
         width: 90%;
-        justify-self: center;
       }
       .pill {
         width: 85%;
-        justify-self: center;
       }
       .pill.website {
-        grid-area: wechat;
       }
       .pill.contact {
-        grid-area: qq;
       }
-      .stage-icons {
+      .stage-bottom {
         gap: clamp(8px, 3%, 24px);
       }
       .icon-link {
@@ -467,13 +472,19 @@
 
   <main class="scene-preview" id="scene-preview" aria-label="AR 名片布局预览">
     <section class="stage">
-      <img class="visual held-card" src="dinghui-card-front-black-gold.png?v=16" alt="新版名片正面">
-      <img class="visual card-back" src="tan-junjia-ar-back-new.jpg" alt="新版名片反面">
-      <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
-      <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
-      <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
-      <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
-      <div class="stage-icons">
+      <div class="stage-body">
+        <div class="stage-left">
+          <img class="visual held-card" src="dinghui-card-front-black-gold.png?v=16" alt="新版名片正面">
+          <img class="visual card-back" src="tan-junjia-ar-back-new.jpg" alt="新版名片反面">
+          <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
+        </div>
+        <div class="stage-right">
+          <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
+          <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
+          <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
+        </div>
+      </div>
+      <div class="stage-bottom">
       <a class="icon-link icon-call" href="tel:13692233879"><img src="ar-assets/icon-call.png" alt="拨打电话"></a>
       <a class="icon-link icon-mail" href="mailto:ivan.tan0528@gmail.com"><img src="ar-assets/icon-mail.png" alt="发送邮件"></a>
       <a class="icon-link icon-map" href="http://maps.apple.com/?q=%E9%99%86%E4%B8%B0%E5%B8%82%E4%B8%9C%E6%B5%B7%E8%A1%97%E9%81%93%E9%BE%99%E5%85%89%E6%9D%91%E5%B9%BF%E4%B8%9C%E7%9C%81%E9%BC%8E%E6%B1%87%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8"><img src="ar-assets/icon-map.png" alt="打开地址"></a>

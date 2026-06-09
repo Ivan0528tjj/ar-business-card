@@ -149,14 +149,14 @@
       overflow: hidden;
       display: grid;
       grid-template-columns: 35fr 65fr;
-      grid-template-rows: auto auto auto auto auto;
+      grid-template-rows: 1fr 1fr 1fr auto auto;
       grid-template-areas:
-        "card    identity"
-        "video   pills"
-        "strip   strip"
-        "icons   icons"
-        "hint    hint";
-      gap: 0;
+        "cardf    identity"
+        "cardb    wechat"
+        "video    qq"
+        "icons    icons"
+        "hint     hint";
+      gap: clamp(8px, 2%, 20px);
       padding: clamp(16px, 3%, 32px);
       align-items: center;
       border: 1px solid rgba(255,255,255,.22);
@@ -188,10 +188,16 @@
       display: block;
     }
     .held-card {
-      grid-area: card;
+      grid-area: cardf;
       width: 100%;
       opacity: 1;
       animation: card-in 760ms cubic-bezier(.16,1,.3,1) both;
+    }
+    .card-back {
+      grid-area: cardb;
+      width: 100%;
+      opacity: 1;
+      animation: card-in 760ms 200ms cubic-bezier(.16,1,.3,1) both;
     }
     .gallery {
       grid-area: video;
@@ -207,26 +213,19 @@
       animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
     }
     .pill {
-      width: 75%;
+      width: 70%;
+      justify-self: center;
       animation: pop-center 540ms cubic-bezier(.2,1.12,.3,1) both;
     }
-    .pills-stack {
-      grid-area: pills;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10%;
-      height: 100%;
-    }
     .pill.website {
+      grid-area: wechat;
       animation-delay: 930ms;
     }
     .pill.contact {
+      grid-area: qq;
       animation-delay: 1050ms;
     }
     .icon-link {
-      grid-area: icons;
       width: auto;
       max-width: 60px;
       aspect-ratio: 1;
@@ -251,49 +250,6 @@
     .icon-mail { animation-delay: 1240ms; }
     .icon-map { animation-delay: 1320ms; }
     .icon-save { animation-delay: 1400ms; }
-    .quick-strip {
-      grid-area: strip;
-      position: relative;
-      width: 100%;
-      min-height: 76px;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      padding: 12px 16px 12px 130px;
-      border: 1px solid rgba(255,255,255,.72);
-      background: rgba(7,8,8,.76);
-      box-shadow: 0 18px 40px rgba(0,0,0,.24);
-      opacity: 0;
-      animation: strip-in 520ms 1090ms cubic-bezier(.2,1.08,.3,1) both;
-    }
-    .quick-strip strong {
-      display: block;
-      font-size: 22px;
-      line-height: 1.1;
-    }
-    .quick-strip span {
-      display: block;
-      margin-top: 2px;
-      color: rgba(255,255,255,.78);
-      font-size: 15px;
-    }
-    .quick-strip::before,
-    .quick-strip::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #fff;
-    }
-    .quick-strip::before { left: 22px; }
-    .quick-strip::after { left: 60px; background: var(--ink); }
-    .quick-strip-text {
-      display: flex;
-      flex-direction: column;
-    }
     .hint {
       grid-area: hint;
       justify-self: end;
@@ -438,20 +394,25 @@
         border-left: 0;
         border-right: 0;
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto auto auto;
+        grid-template-rows: auto auto auto auto auto auto auto;
         grid-template-areas:
-          "card"
-          "identity"
+          "cardf"
+          "cardb"
           "video"
-          "pills"
-          "strip"
+          "identity"
+          "wechat"
+          "qq"
           "icons";
-        gap: 8px;
+        gap: 10px;
         padding: 12px;
         align-items: start;
       }
       .held-card {
-        width: 80%;
+        width: 75%;
+        justify-self: center;
+      }
+      .card-back {
+        width: 75%;
         justify-self: center;
       }
       .gallery {
@@ -459,37 +420,19 @@
         justify-self: center;
       }
       .identity {
-        width: 85%;
+        width: 80%;
         justify-self: center;
       }
       .pill {
-        width: 65%;
+        width: 55%;
+        justify-self: center;
       }
-      .pills-stack {
-        grid-area: pills;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        height: auto;
+      .pill.website {
+        grid-area: wechat;
       }
-      .quick-strip {
-        display: flex;
-        padding: 10px 12px 10px 100px;
+      .pill.contact {
+        grid-area: qq;
       }
-      .quick-strip strong {
-        font-size: 16px;
-      }
-      .quick-strip span {
-        font-size: 12px;
-      }
-      .quick-strip::before,
-      .quick-strip::after {
-        width: 36px;
-        height: 36px;
-      }
-      .quick-strip::before { left: 14px; }
-      .quick-strip::after { left: 42px; }
       .stage-icons {
         gap: clamp(8px, 3%, 24px);
       }
@@ -521,13 +464,11 @@
   <main class="scene-preview" id="scene-preview" aria-label="AR 名片布局预览">
     <section class="stage">
       <img class="visual held-card" src="dinghui-card-front-black-gold.png?v=16" alt="新版名片正面">
+      <img class="visual card-back" src="tan-junjia-ar-back.png" alt="新版名片反面">
       <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
       <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
-      <div class="pills-stack">
       <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
       <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
-      </div>
-      <div class="quick-strip"><div class="quick-strip-text"><strong>广东鼎汇 AR 名片</strong><span>电话 / 邮件 / 地址 / 保存联系人</span></div></div>
       <div class="stage-icons">
       <a class="icon-link icon-call" href="tel:13692233879"><img src="ar-assets/icon-call.png" alt="拨打电话"></a>
       <a class="icon-link icon-mail" href="mailto:ivan.tan0528@gmail.com"><img src="ar-assets/icon-mail.png" alt="发送邮件"></a>

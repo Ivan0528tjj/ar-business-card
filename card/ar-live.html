@@ -145,13 +145,10 @@
     .stage {
       position: relative;
       width: min(1180px, 100%);
-      aspect-ratio: 16 / 7;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
       gap: clamp(4px, 1.5%, 14px);
       padding: clamp(10px, 2%, 24px);
-      border: 2px solid #ff3344;
       background:
         radial-gradient(circle at 28% 22%, rgba(255,255,255,.16), transparent 20%),
         linear-gradient(18deg, rgba(255,255,255,.06), rgba(0,0,0,.14));
@@ -227,8 +224,8 @@
       flex: none;
       width: 100%;
       max-width: 100%;
+      max-height: 200px;
       height: auto;
-      aspect-ratio: 16 / 9;
       object-fit: contain;
       animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
     }

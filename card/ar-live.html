@@ -225,38 +225,18 @@
       animation: card-in 760ms 200ms cubic-bezier(.16,1,.3,1) both;
     }
     .gallery {
-      flex: 2 1 0;
       object-fit: cover;
       animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
     }
     .identity {
       width: 85%;
       align-self: center;
-      flex: 1 1 0;
       animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
     }
     .pill {
-      width: auto;
+      width: 70%;
       align-self: center;
       animation: pop-center 540ms cubic-bezier(.2,1.12,.3,1) both;
-    }
-    .pill img {
-      height: 100%;
-      width: auto;
-      object-fit: contain;
-    }
-    .pill-row {
-      display: flex;
-      flex: 1 1 0;
-      min-height: 0;
-      gap: clamp(2px, 1%, 8px);
-      align-items: center;
-      justify-content: center;
-    }
-    .pill-row > * {
-      flex: 1 1 0;
-      min-width: 0;
-      height: 100%;
     }
     .pill.website {
       animation-delay: 930ms;
@@ -500,10 +480,8 @@
         </div>
         <div class="stage-right">
           <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
-          <div class="pill-row">
-            <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
-            <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
-          </div>
+          <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-website.png?v=10" alt="保存微信 cyclone_2006"></a>
+          <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-contact.png?v=10" alt="保存 QQ 304514421"></a>
           <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
         </div>
       </div>

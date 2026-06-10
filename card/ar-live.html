@@ -185,8 +185,9 @@
       flex: 0 0 auto;
       display: flex;
       justify-content: center;
-      gap: clamp(12px, 4%, 40px);
+      gap: clamp(20px, 6%, 56px);
       align-items: center;
+      margin-top: 8px;
     }
     .stage::before {
       content: "";
@@ -236,7 +237,6 @@
       width: 100%;
       align-self: center;
       flex: 1 1 0;
-      max-height: 65%;
       object-fit: contain;
       animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
     }
@@ -253,7 +253,7 @@
     }
     .pill-row {
       display: flex;
-      flex: 1 1 0;
+      flex: 0 0 auto;
       min-height: 0;
       gap: 6px;
       align-items: center;
@@ -273,7 +273,7 @@
     }
     .icon-link {
       width: auto;
-      max-width: 60px;
+      max-width: 76px;
       aspect-ratio: 1;
       z-index: 5;
       opacity: 0;

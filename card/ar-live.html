@@ -245,6 +245,20 @@
       object-fit: contain;
       display: block;
     }
+    .pill-row {
+      display: flex;
+      flex: 1 1 0;
+      min-height: 0;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+    }
+    .pill-row .pill {
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto;
+      max-width: 120px;
+    }
     .pill.website {
       animation-delay: 930ms;
     }
@@ -487,8 +501,10 @@
         </div>
         <div class="stage-right">
           <img class="visual identity" src="ar-assets/identity-float.png" alt="谭俊佳">
-          <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-weixin.png" alt="微信 cyclone_2006"></a>
-          <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-qq.png" alt="QQ 304514421"></a>
+          <div class="pill-row">
+            <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-weixin.png" alt="微信 cyclone_2006"></a>
+            <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-qq.png" alt="QQ 304514421"></a>
+          </div>
           <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
         </div>
       </div>

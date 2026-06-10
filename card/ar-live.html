@@ -224,16 +224,20 @@
       animation: card-in 760ms 200ms cubic-bezier(.16,1,.3,1) both;
     }
     .gallery {
-      flex: 1.3 1 0;
+      flex: none;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
       object-fit: contain;
-      max-width: 85%;
-      align-self: center;
       animation: pop-left 620ms 460ms cubic-bezier(.2,1.12,.3,1) both;
     }
     .identity {
-      width: 85%;
+      width: 100%;
       align-self: center;
-      flex: 0.3 1 0;
+      flex: 1 1 0;
+      max-height: 65%;
+      object-fit: contain;
       animation: pop-center 700ms 650ms cubic-bezier(.2,1.18,.3,1) both;
     }
     .pill {
@@ -507,9 +511,9 @@
             <a class="visual pill website" href="weixin://contacts/profile/cyclone_2006"><img src="ar-assets/button-weixin.png" alt="微信 cyclone_2006"></a>
             <a class="visual pill contact" href="mqqwpa://im/chat?chat_type=wpa&uin=304514421&version=1&src_type=web&web_src=oicqzone.com"><img src="ar-assets/button-qq.png" alt="QQ 304514421"></a>
           </div>
-          <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
         </div>
       </div>
+      <video class="visual gallery gallery-video" src="ar-assets/company-promo.mp4?v=12" poster="ar-assets/company-promo-poster.png?v=12" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="企业宣传视频"></video>
       <div class="stage-bottom">
       <a class="icon-link icon-call" href="tel:13692233879"><img src="ar-assets/icon-call.png" alt="拨打电话"></a>
       <a class="icon-link icon-mail" href="mailto:ivan.tan0528@gmail.com"><img src="ar-assets/icon-mail.png" alt="发送邮件"></a>

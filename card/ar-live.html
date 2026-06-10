@@ -137,9 +137,8 @@
       place-items: center;
       padding: 68px 16px 24px;
       background:
-        linear-gradient(112deg, rgba(255,255,255,.08), rgba(255,255,255,0) 28%),
-        repeating-linear-gradient(26deg, rgba(255,255,255,.045) 0 2px, transparent 2px 82px),
-        linear-gradient(22deg, #3f3328 0%, #6a5440 28%, #44362c 56%, #79644c 100%);
+        url(ar-assets/bg.png) center / cover no-repeat;
+      /* original gradient background replaced */
     }
     .stage {
       position: relative;
@@ -151,8 +150,8 @@
       gap: clamp(4px, 1.5%, 14px);
       padding: clamp(10px, 2%, 24px);
       background:
-        radial-gradient(circle at 28% 22%, rgba(255,255,255,.16), transparent 20%),
-        linear-gradient(18deg, rgba(255,255,255,.06), rgba(0,0,0,.14));
+        radial-gradient(circle at 28% 22%, rgba(255,255,255,.3), transparent 20%),
+        linear-gradient(18deg, rgba(255,255,255,.08), rgba(0,0,0,.06));
       box-shadow: 0 34px 90px rgba(0,0,0,.38);
     }
     .stage-body {
@@ -196,7 +195,7 @@
       background:
         repeating-linear-gradient(101deg, transparent 0 118px, rgba(255,255,255,.07) 119px 121px, transparent 122px 240px),
         radial-gradient(circle at 18% 72%, rgba(0,0,0,.22), transparent 22%);
-      opacity: .75;
+      opacity: .35;
     }
     .visual {
       display: block;

@@ -149,10 +149,7 @@
       flex-direction: column;
       gap: clamp(4px, 1.5%, 14px);
       padding: clamp(10px, 2%, 24px);
-      background:
-        radial-gradient(circle at 28% 22%, rgba(255,255,255,.3), transparent 20%),
-        linear-gradient(18deg, rgba(255,255,255,.08), rgba(0,0,0,.06));
-      box-shadow: 0 34px 90px rgba(0,0,0,.38);
+      background: transparent;
     }
     .stage-body {
       display: flex;
@@ -192,15 +189,12 @@
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        repeating-linear-gradient(101deg, transparent 0 118px, rgba(255,255,255,.07) 119px 121px, transparent 122px 240px),
-        radial-gradient(circle at 18% 72%, rgba(0,0,0,.22), transparent 22%);
-      opacity: .35;
+      background: transparent;
+      opacity: 0;
     }
     .visual {
       display: block;
       object-fit: contain;
-      filter: drop-shadow(0 22px 34px rgba(0,0,0,.34));
       opacity: 0;
       animation-fill-mode: both;
       z-index: 2;
